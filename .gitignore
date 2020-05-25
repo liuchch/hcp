@@ -12,3 +12,6 @@
 /captures
 .externalNativeBuild
 .cxx
+app/libs/
+p6/libs/
+p7/libs/
