@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import com.alpha.p7.R
 import com.alpha.p7.Utils
+import com.alpha.p7.getZForCamera
 
 class CameraView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -17,25 +18,45 @@ class CameraView(context: Context?, attrs: AttributeSet?) : View(context, attrs)
     var camera = Camera()
 
     val bitmap: Bitmap
+    var bitmapWidth: Float
 
     init {
-        paint.setColor(resources.getColor(R.color.red))
+        paint.color = resources.getColor(R.color.red)
 
 
-        bitmap = getAvatar(Utils.dp2px(100f).toInt(), R.drawable.avatar_rengwuxian)
 
         camera.rotateX(30f)
-        camera.setLocation(0f, 0f, -8f)
+        camera.setLocation(0f, 0f, getZForCamera(-4f))
+        bitmapWidth = Utils.dp2px(200f)
+        bitmap = getAvatar(bitmapWidth.toInt(), R.drawable.avatar_rengwuxian)
+
     }
 
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        canvas?.translate(Utils.dp2px(150f), Utils.dp2px(150f))
-        camera.applyToCanvas(canvas)
-        canvas?.translate(Utils.dp2px(-150f), Utils.dp2px(-150f))
+        canvas?.save()
+        canvas?.translate(Utils.dp2px(200f), Utils.dp2px(200f))
+        canvas?.rotate(-20f)
+        canvas?.clipRect(-bitmapWidth, -bitmapWidth, bitmapWidth, 0f)
+        canvas?.rotate(20f)
+        canvas?.translate(Utils.dp2px(-200f), Utils.dp2px(-200f))
         canvas?.drawBitmap(bitmap, Utils.dp2px(100f), Utils.dp2px(100f), paint)
+        canvas?.restore()
+
+
+
+        canvas?.save()
+        canvas?.translate(Utils.dp2px(200f), Utils.dp2px(200f))
+        canvas?.rotate(-20f)
+        camera.applyToCanvas(canvas)
+        canvas?.clipRect(-bitmapWidth, 0f, bitmapWidth, bitmapWidth)
+        canvas?.rotate(20f)
+        canvas?.translate(Utils.dp2px(-200f), Utils.dp2px(-200f))
+        canvas?.drawBitmap(bitmap, Utils.dp2px(100f), Utils.dp2px(100f), paint)
+        canvas?.restore()
+
 
 
     }
