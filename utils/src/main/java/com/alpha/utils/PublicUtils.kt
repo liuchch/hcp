@@ -22,6 +22,11 @@ fun dp2px(dpValue: Float): Float {
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, Resources.getSystem().displayMetrics)
 }
 
+fun dp2px(dpValue: Int): Float {
+    //         (int) (0.5f + dpValue * density);
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue.toFloat(), Resources.getSystem().displayMetrics)
+}
+
 /**
  * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
  */
