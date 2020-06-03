@@ -1,2 +1,3 @@
-include ':app', ':p6', ':p7', ':p8', ':utils', ':p9', ':p10'
+include ':app', ':p6', ':p7', ':p8', ':p9'
+include ':utils'
 rootProject.name='MyHCP'
