@@ -5,11 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <net.liu6.p10.SquareImageView
+    <net.liu6.p10.CircleView
         android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:src="@drawable/avatar_rengwuxian"
-        android:scaleType="centerCrop"
+        android:layout_height="400dp"
         />
 
 </LinearLayout>
