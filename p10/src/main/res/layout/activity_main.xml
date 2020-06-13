@@ -5,9 +5,56 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <net.liu6.p10.CircleView
-        android:layout_width="300dp"
-        android:layout_height="400dp"
-        />
+    <net.liu6.p10.TagLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <net.liu6.p10.ColoredTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1sdfsdokfj"
+            />
+        <net.liu6.p10.ColoredTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2sdf"
+            />
+        <net.liu6.p10.ColoredTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3sdfksadlkfjkaj"
+            />
+        <net.liu6.p10.ColoredTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="4fdsfsd"
+            />
+        <net.liu6.p10.ColoredTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5fsdiofjsaokjfkasjdf"
+            />
+        <net.liu6.p10.ColoredTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="6ads"
+            />
+        <net.liu6.p10.ColoredTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="7fdsf"
+            />
+        <net.liu6.p10.ColoredTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="842fkjskfjkas378"
+            />
+        <net.liu6.p10.ColoredTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9sdfdkfk"
+            />
+
+    </net.liu6.p10.TagLayout>
 
 </LinearLayout>
