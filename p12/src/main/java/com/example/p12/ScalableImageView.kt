@@ -31,11 +31,13 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     var gestureDetector : GestureDetector = GestureDetector(context, this)
     var isBig = false
-    var objectAnimator = ObjectAnimator.ofFloat(this, "fraction", 0f, 1f)
+    lateinit var objectAnimator: ObjectAnimator
 
     init {
         bitmap = Utils.getAvatar(resources, IMAGE_WIDTH.toInt())
         gestureDetector.setOnDoubleTapListener(this)
+        objectAnimator = ObjectAnimator.ofFloat(this, "fraction", 0f, 1f)
+        objectAnimator.duration = 1000
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -47,7 +49,6 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
         val heightScale = height / IMAGE_WIDTH
         smallScale = min(widthScale, heightScale)
         bigScale = max(widthScale, heightScale)
-
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -88,18 +89,17 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
     }
 
     override fun onDoubleTap(e: MotionEvent?): Boolean {
+        if (isBig) {
+            isBig = !isBig
+            objectAnimator.reverse()
+        } else {
+            isBig = !isBig
+            objectAnimator.start()
+        }
         return false
     }
 
     override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
-        if (isBig) {
-            isBig = !isBig
-            objectAnimator.start()
-        } else {
-            isBig = !isBig
-            objectAnimator.reverse()
-        }
-
         return false
     }
 
