@@ -1,5 +1,6 @@
 package com.example.p12
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -21,10 +22,16 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
     var bigScale = 1f
     var smallScale = 1f
     var fraction = 0f
+        get() = field
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     var gestureDetector : GestureDetector = GestureDetector(context, this)
-    val isBig = false
+    var isBig = false
+    var objectAnimator = ObjectAnimator.ofFloat(this, "fraction", 0f, 1f)
 
     init {
         bitmap = Utils.getAvatar(resources, IMAGE_WIDTH.toInt())
@@ -41,8 +48,6 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
         smallScale = min(widthScale, heightScale)
         bigScale = max(widthScale, heightScale)
 
-
-
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -52,7 +57,9 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        canvas?.scale(smallScale, smallScale)
+        canvas?.scale(smallScale + (bigScale - smallScale) * fraction,
+            smallScale + (bigScale-smallScale) * fraction,
+            width / 2f, height / 2f)
         canvas?.drawBitmap(bitmap, offsetX, offsetY, paint)
     }
 
@@ -86,7 +93,11 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
 
     override fun onDoubleTapEvent(e: MotionEvent?): Boolean {
         if (isBig) {
-
+            isBig = !isBig
+            objectAnimator.start()
+        } else {
+            isBig = !isBig
+            objectAnimator.reverse()
         }
 
         return false
