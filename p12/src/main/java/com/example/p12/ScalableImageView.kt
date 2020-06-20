@@ -60,7 +60,7 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        canvas?.translate(translateX, translateX)
+        canvas?.translate(translateX, translateY)
         canvas?.scale(smallScale + (bigScale - smallScale) * fraction,
             smallScale + (bigScale-smallScale) * fraction,
             width / 2f, height / 2f)
@@ -84,8 +84,8 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
     }
 
     override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
-        translateX = distanceX
-        translateY = distanceY
+        translateX += -distanceX
+        translateY += -distanceY
         invalidate()
         return false
     }
