@@ -27,6 +27,8 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
             field = value
             invalidate()
         }
+    var translateX = 0f
+    var translateY = 0f
 
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     var gestureDetector : GestureDetector = GestureDetector(context, this)
@@ -58,6 +60,7 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
+        canvas?.translate(translateX, translateX)
         canvas?.scale(smallScale + (bigScale - smallScale) * fraction,
             smallScale + (bigScale-smallScale) * fraction,
             width / 2f, height / 2f)
@@ -81,6 +84,9 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
     }
 
     override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
+        translateX = distanceX
+        translateY = distanceY
+        invalidate()
         return false
     }
 
