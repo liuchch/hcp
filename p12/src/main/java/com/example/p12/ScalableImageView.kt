@@ -10,6 +10,7 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import android.widget.OverScroller
+import androidx.core.view.GestureDetectorCompat
 import com.alpha.utils.dp2px
 import kotlin.math.max
 import kotlin.math.min
@@ -32,7 +33,7 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
     var translateY = 0f
 
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    var gestureDetector : GestureDetector = GestureDetector(context, this)
+    var gestureDetector : GestureDetectorCompat = GestureDetectorCompat(context, this)
     var isBig = false
     var objectAnimator: ObjectAnimator
     val overScale = 3
