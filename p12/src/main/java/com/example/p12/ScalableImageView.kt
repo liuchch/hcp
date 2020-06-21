@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import android.widget.OverScroller
 import com.alpha.utils.dp2px
 import kotlin.math.max
 import kotlin.math.min
@@ -33,7 +34,11 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
     val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     var gestureDetector : GestureDetector = GestureDetector(context, this)
     var isBig = false
-    lateinit var objectAnimator: ObjectAnimator
+    var objectAnimator: ObjectAnimator
+    val overScale = 3
+    var currentScale = 1f
+
+    val scroller = OverScroller(context)
 
     init {
         bitmap = Utils.getAvatar(resources, IMAGE_WIDTH.toInt())
@@ -50,7 +55,7 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
         val widthScale = width / IMAGE_WIDTH
         val heightScale = height / IMAGE_WIDTH
         smallScale = min(widthScale, heightScale)
-        bigScale = max(widthScale, heightScale)
+        bigScale = max(widthScale, heightScale) * 1.5f
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -60,10 +65,10 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        canvas?.translate(translateX, translateY)
-        canvas?.scale(smallScale + (bigScale - smallScale) * fraction,
-            smallScale + (bigScale-smallScale) * fraction,
-            width / 2f, height / 2f)
+        currentScale = (smallScale + (bigScale - smallScale) * fraction)
+
+        canvas?.translate(translateX * fraction, translateY * fraction)
+        canvas?.scale(currentScale, currentScale, width / 2f, height / 2f)
         canvas?.drawBitmap(bitmap, offsetX, offsetY, paint)
     }
 
@@ -80,15 +85,48 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
     }
 
     override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+        if (isBig) {
+            scroller.fling(
+                translateX.toInt(),
+                translateY.toInt(),
+                velocityX.toInt(),
+                velocityY.toInt(),
+                (- (IMAGE_WIDTH * currentScale - width)/2).toInt(),
+                ((IMAGE_WIDTH * currentScale - width)/2).toInt(),
+                (- (IMAGE_WIDTH * currentScale - height)/2).toInt(),
+                ((IMAGE_WIDTH * currentScale - height)/2).toInt()
+            )
+            postOnAnimation(runnable)
+        }
         return false
     }
 
+    val runnable = object : Runnable {
+        override fun run() {
+            if (scroller.computeScrollOffset()) {
+                translateX = scroller.currX.toFloat()
+                translateY = scroller.currY.toFloat()
+                invalidate()
+                postOnAnimation(this)
+            }
+        }
+
+    }
+
     override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
-        translateX += -distanceX
-        translateY += -distanceY
-        invalidate()
+        if (isBig) {
+            translateX += -distanceX
+            translateY += -distanceY
+            translateX = max(translateX, - (IMAGE_WIDTH * currentScale - width)/2)
+            translateX = min(translateX,  (IMAGE_WIDTH * currentScale - width)/2)
+            translateY = max(translateY, - (IMAGE_WIDTH * currentScale - height)/2)
+            translateY = min(translateY,  (IMAGE_WIDTH * currentScale - height)/2)
+            invalidate()
+        }
         return false
     }
+
+
 
     override fun onLongPress(e: MotionEvent?) {
 
