@@ -149,8 +149,8 @@ class ScalableImageView(context: Context?, attrs: AttributeSet?) : View(context,
                 getMyObjectAnimator().reverse()
             } else {
                 e?.let {
-                    offsetX = (e.x - width / 2f) - (e.x - width / 2) * bigScale / smallScale
-                    offsetY = (e.y - height / 2f) - (e.y - height / 2) * bigScale / smallScale
+                    offsetX =  - ( (e.x - width / 2) * bigScale / smallScale - (e.x - width / 2f))
+                    offsetY = - ( (e.y - height / 2) * bigScale / smallScale - (e.y - height / 2f))
                     fixOffsets()
                 }
                 isBig = !isBig
